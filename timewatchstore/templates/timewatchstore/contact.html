@@ -1,0 +1,210 @@
+{% extends "timewatchstore/base.html" %}
+{% load static %}
+{% block content %}
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+	<div class="main_menu">
+		<nav class="navbar navbar-expand-lg navbar-light main_box">
+			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<a class="navbar-brand logo_h" href="{% url 'timewatchstore:index.html' %}"><img
+						src='{% static "timewatchstore/img/logo.png" alt="" %}'></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+					<ul class="nav navbar-nav menu_nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="{% url 'timewatchstore:index.html' %}">Home</a>
+						</li>
+						<li class="nav-item"><a class="nav-link"
+								href="{% url 'timewatchstore:category.html' 0%}">Shop</a></li>
+						<!-- <li class="nav-item submenu dropdown">
+							<a href="{% url 'timewatchstore:category.html' 0%}" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false">Shop</a>
+							<ul class="dropdown-menu">
+								<li class="nav-item"><a class="nav-link"
+										href="{% url 'timewatchstore:category.html' 0%}">Shop Category</a></li>
+								<li class="nav-item"><a class="nav-link"
+										href="{% url 'timewatchstore:checkout.html' %}">Product Checkout</a>
+								</li>
+								<li class="nav-item"><a class="nav-link"
+										href="{% url 'timewatchstore:cart.html' %}">Shopping Cart</a></li>
+								<li class="nav-item"><a class="nav-link"
+										href="{% url 'timewatchstore:confirmation.html' %}">Confirmation</a>
+								</li>
+							</ul>
+						</li> -->
+						<li class="nav-item submenu dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false">Brands</a>
+							<ul class="dropdown-menu">
+								{% if subcategories %}
+								{% for category in subcategories %}
+								<li class="nav-item"><a class="nav-link"
+										href="{% url 'timewatchstore:category.html' category.id%}">{{category.name}}</a>
+								</li>
+								{% endfor %}
+								{% endif %}
+							</ul>
+						</li>
+						<li class="nav-item active"><a class="nav-link" href="{% url 'timewatchstore:contact.html' %}">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'cart:cart_detail' %}">Cart</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<!-- <li class="nav-item"><a href="{% url 'cart:cart_detail' %}" class="cart"><span class="ti-bag"></span></a></li> -->
+						<li class="nav-item">
+							<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div class="search_input" id="search_input_box">
+		<div class="container">
+			<form action="{% url 'timewatchstore:search.html' %}" class="d-flex justify-content-between" method="GET" name="search_form">
+				<select style="width:auto;" name="subcategory_id">
+					<option selected="selected" value="0">Tất cả</option>
+					{%if subcategories %}
+					{% for category in subcategories%}
+					{% if subcategory == category.id %}
+					<option value="{{category.id}}" selected="selected">{{category.name}}</option>
+					{% else %}
+					<option value="{{category.id}}">{{category.name}}</option>
+					{% endif %}
+					{% endfor %}
+					{% endif %}
+				</select>
+				<input type="search" name="name" class="form-control" placeholder="Search Here ..." value="{{search_str}}">
+				<button class="btn" style="border:none; background:none; color:white"><span class="lnr lnr-magnifier" id="search"></span></button>
+				<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+			</form>
+		</div>
+	</div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+	<div class="container">
+		<div class="breadcrumb-banner d-flex flex-wrap align-items-center">
+			<div class="col-first">
+				<h1>Contact Us</h1>
+				<nav class="d-flex align-items-center">
+					<a href="{% url 'timewatchstore:index.html' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+					<a href="{% url 'timewatchstore:contact.html' %}">Contact</a>
+				</nav>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Contact Area =================-->
+<section class="contact_area section_gap_bottom">
+	<div class="container">
+		<iframe
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.89942954827814!2d106.66677995909784!3d10.79633858205624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175292e79f1e72f%3A0xae118f87eef3dca1!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBUw6BpIG5ndXnDqm4gdsOgIE3DtGkgdHLGsOG7nW5nIFRQLkhDTQ!5e0!3m2!1svi!2s!4v1641203929594!5m2!1svi!2s"
+			width="1110" height="420" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+		<div class="row" style="padding-top: 20px;">
+			<div class="col-lg-4">
+				<div class="contact_info">
+					<div class="info_item">
+						<i class="lnr lnr-home"></i>
+						<h6>Tân Phú, Thành Phố Hồ Chí Minh</h6>
+						<p></p>
+					</div>
+					<div class="info_item">
+						<i class="lnr lnr-phone-handset"></i>
+						<h6><a href="#">0902482722</a></h6>
+						<p></p>
+					</div>
+					<div class="info_item">
+						<i class="lnr lnr-envelope"></i>
+						<h6><a href="#">timewatchstore.factory@gmail.com</a></h6>
+						<p></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-8">
+				<form class="row contact_form" action="{% url 'timewatchstore:contact.html' %}" method="POST"
+					id="contactForm" novalidate="novalidate">
+					{% csrf_token %}
+					<div class="col-md-6">
+						<div class="form-group">
+							<input type="text" class="form-control" id="name" name="fullname"
+								placeholder="Enter your name" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter your name'">
+						</div>
+						<div class="form-group">
+							<input type="email" class="form-control" id="name" name="email"
+								placeholder="Enter email address" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter email address'">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="name" name="subject" placeholder="Enter Subject"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Subject'">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" id="name" name="phone" placeholder="Enter Phone"
+								onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Phone'">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<textarea class="form-control" name="content" id="name" rows="1"
+								placeholder="Enter Message" onfocus="this.placeholder = ''"
+								onblur="this.placeholder = 'Enter Message'"></textarea>
+						</div>
+					</div>
+					<div class="col-md-12 text-right">
+						<button type="submit" value="submit" class="primary-btn">Send Message</button>
+					</div>
+					<div>
+						<h5>{{result}}</h5>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================Contact Area =================-->
+
+<!--================Contact Success and Error message Area =================-->
+<div id="success" class="modal modal-message fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i class="fa fa-close"></i>
+				</button>
+				<h2>Thank you</h2>
+				<p>Your message is successfully sent...</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modals error -->
+
+<div id="error" class="modal modal-message fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<i class="fa fa-close"></i>
+				</button>
+				<h2>Sorry !</h2>
+				<p> Something went wrong </p>
+			</div>
+		</div>
+	</div>
+</div>
+<!--================End Contact Success and Error message Area =================-->
+{% endblock %}

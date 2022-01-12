@@ -1,0 +1,356 @@
+{% extends "timewatchstore/base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+	<div class="main_menu">
+		<nav class="navbar navbar-expand-lg navbar-light main_box">
+			<div class="container">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<a class="navbar-brand logo_h" href="{% url 'timewatchstore:index.html' %}"><img
+						src='{% static "timewatchstore/img/logo.png" alt="" %}'></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+					<ul class="nav navbar-nav menu_nav ml-auto">
+						<li class="nav-item"><a class="nav-link" href="{% url 'timewatchstore:index.html' %}">Home</a>
+						</li>
+						<li class="nav-item active"><a class="nav-link"
+								href="{% url 'timewatchstore:category.html' 0%}">Shop</a></li>
+						<!-- <li class="nav-item submenu dropdown active">
+							<a href="{% url 'timewatchstore:category.html' 0%}" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false">Shop</a>
+							<ul class="dropdown-menu">
+								<li class="nav-item active"><a class="nav-link" href="{% url 'timewatchstore:category.html' 0%}">Shop Category</a></li>
+								<li class="nav-item"><a class="nav-link" href="{% url 'timewatchstore:checkout.html' %}">Product Checkout</a>
+								</li>
+								<li class="nav-item"><a class="nav-link" href="{% url 'timewatchstore:cart.html' %}">Shopping Cart</a></li>
+								<li class="nav-item"><a class="nav-link" href="{% url 'timewatchstore:confirmation.html' %}">Confirmation</a>
+								</li>
+							</ul>
+						</li> -->
+						<li class="nav-item submenu dropdown">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+								aria-haspopup="true" aria-expanded="false">Brands</a>
+							<ul class="dropdown-menu">
+								{% if subcategories %}
+								{% for category in subcategories %}
+								<li class="nav-item"><a class="nav-link"
+										href="{% url 'timewatchstore:category.html' category.id%}">{{category.name}}</a>
+								</li>
+								{% endfor %}
+								{% endif %}
+							</ul>
+						</li>
+						<li class="nav-item"><a class="nav-link"
+							href="{% url 'timewatchstore:contact.html' %}">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{% url 'cart:cart_detail' %}">Cart</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<!-- <li class="nav-item"><a href="{% url 'cart:cart_detail' %}" class="cart"><span class="ti-bag"></span></a></li> -->
+						<li class="nav-item">
+							<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div class="search_input" id="search_input_box">
+		<div class="container">
+			<form action="{% url 'timewatchstore:search.html' %}" class="d-flex justify-content-between" method="GET" name="search_form">
+				<select style="width:auto;" name="subcategory_id">
+					<option selected="selected" value="0">Tất cả</option>
+					{%if subcategories %}
+					{% for category in subcategories%}
+					{% if subcategory == category.id %}
+					<option value="{{category.id}}" selected="selected">{{category.name}}</option>
+					{% else %}
+					<option value="{{category.id}}">{{category.name}}</option>
+					{% endif %}
+					{% endfor %}
+					{% endif %}
+				</select>
+				<input type="search" name="name" class="form-control" placeholder="Search Here ..." value="{{search_str}}">
+				<button class="btn" style="border:none; background:none; color:white"><span class="lnr lnr-magnifier" id="search"></span></button>
+			</form>
+		</div>
+	</div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb"
+	style="background-image: url(/timewatchstore/static/timewatchstore/img/banner/common-banner.jpg)">
+	<div class="container">
+		<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+			<div class="col-first">
+				<h1>Shop Category page</h1>
+				<nav class="d-flex align-items-center">
+					<a href="{% url 'timewatchstore:index.html' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+					<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+					<a href="{% url 'timewatchstore:category.html' 0%}">Fashion Category</a>
+				</nav>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Banner Area -->
+<div class="container">
+	<div class="row">
+		<div class="col-xl-3 col-lg-4 col-md-5">
+			<div class="sidebar-categories">
+				<div class="head">Browse Categories</div>
+				<ul class="main-categories">
+					<li class="main-nav-list"><a data-toggle="collapse" href="#fruitsVegetable" aria-expanded="true"
+							aria-controls="fruitsVegetable"><span
+								class="lnr lnr-arrow-right"></span><strong>Brands</strong><span
+								class="number"></span></a>
+						<ul class="collapse show" id="fruitsVegetable" data-toggle="collapse" aria-expanded="false"
+							aria-controls="fruitsVegetable">
+							{% if subcategories %}
+							{% for category in subcategories %}
+							<li class="main-nav-list child"><a
+									href="{% url 'timewatchstore:category.html' category.id%}">{{category.name}}<span
+										class="number"></span></a>
+							</li>
+							{% endfor %}
+							{% endif %}
+						</ul>
+					</li>
+					<li class="main-nav-list"><a data-toggle="collapse" href="#meatFish" aria-expanded="true"
+							aria-controls="meatFish"><span
+								class="lnr lnr-arrow-right"></span><strong>Gender</strong><span
+								class="number"></span></a>
+						<ul class="collapse show" id="meatFish" data-toggle="collapse" aria-expanded="false"
+							aria-controls="meatFish">
+							{% if subcategories_gender%}
+							{% for category in subcategories_gender %}
+							<li class="main-nav-list child"><a
+									href="{% url 'timewatchstore:category.html' category.id%}">{{category.name}}<span
+										class="number"></span></a>
+							</li>
+							{% endfor %}
+							{% endif %}
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div class="sidebar-filter mt-50">
+				<div class="top-filter-head">Product Filters</div>
+				<div class="common-filter">
+					<div class="head">Price</div>
+					<div class="price-range-area">
+						<form action="{% url 'timewatchstore:price_filter.html' %}" method="GET" name="filter_price">
+							<input type="hidden" name="subcategory_id_1"
+								value="{%if subcategory %}{{subcategory}}{% elif pk %}{{pk}}{% else %}0{% endif%}">								
+							<input type="hidden" name="name_1" value={{search_str}}>
+
+							<div class="col-xs-2"><input pattern="[1-9][0-9]{7,}" placeholder="Giá từ" value="50000000"
+									title="Nhập giá từ 5000000 trở lên" name="price_from" id="price" style="width:150px; border:none; border-bottom:solid 0.5px" /><span> VNĐ đến</span></div>
+							<div class="col-xs-2"><input pattern="[1-9][0-9]{7,}" placeholder="Giá đến"
+									value="200000000" title="Nhập giá từ 5000000 trở lên" name="price_to" id="price" style="width:150px; border:none; border-bottom:solid 0.5px" /> VNĐ</div>								
+							<input type="submit" value="OK" style="margin-top:5px; border:none;" class="btn btn-dark">
+						</form>
+						<!-- <div id="price-range"></div> -->
+						<!-- <div class="value-wrapper d-flex">
+							<div class="price">Price:</div>
+							<span>$</span>
+							<div id="lower-value"></div>
+							<div class="to">to</div>
+							<span>$</span>
+							<div id="upper-value"></div>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-9 col-lg-8 col-md-7">
+			<!-- Start Filter Bar -->
+			<div class="filter-bar d-flex flex-wrap align-items-center">
+				<div class="sorting">
+					<select>
+						<option value="1">Default sorting</option>
+						<option value="1">Default sorting</option>
+						<option value="1">Default sorting</option>
+					</select>
+				</div>
+				<div class="sorting mr-auto">
+					<select>
+						<option value="1">Show 12</option>
+						<option value="1">Show 12</option>
+						<option value="1">Show 12</option>
+					</select>
+				</div>
+				<div class="pagination">
+					{% if products.has_other_pages %}
+					{% if products.has_previous %}
+					<a href="?page={{ products.previous_page_number }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="btn_mange_pagging"><i
+							class="fa fa-long-arrow-left"></i>&nbsp;&nbsp;</a>
+					{% else %}
+					<div class="disabled"><span></span></div>
+					{% endif %}
+					{% for i in products.paginator.page_range %}
+					{% if products.number == i %}
+					<a href="?page={{ i }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="active">{{i}}</a>
+					{% else %}
+					<a href="?page={{ i }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="btn_pagging">{{i}}</a>
+					{% endif %}
+					{% endfor %}
+					{% if products.has_next %}
+					<a href="?page={{ products.next_page_number }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="btn_mange_pagging"><i
+							class="fa fa-long-arrow-right"></i>&nbsp;&nbsp; </a>
+					{% else %}
+					<div class="disabled"><span></span></div>
+					{% endif %}
+					{% endif %}
+				</div>
+			</div>
+			<!-- End Filter Bar -->
+			<!-- Start Best Seller -->
+			<section class="lattest-product-area pb-40 category-list">
+				<div class="row">
+					<div class="col-12"></div>
+					<div class="col-12">
+						<div class="shop-shorter">
+							<div class="single-shorter">
+								<h6>Sản phẩm {{subcategory_name}} {{result}}</h6>
+								{% if search_str %}
+								{% if product_items %}
+								<h7>Tìm thấy {{product_items}} sản phẩm có từ '{{search_str}}'</h7>
+								{% else %}
+								<h7>Không tìm thấy sản phẩm nào!</h7>
+								{% endif %}
+								{% endif%}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					{% if products %}
+					{% for product in products %}
+					<!-- single product -->
+					<div class="col-lg-4 col-md-6">
+						<div class="single-product">
+							<a href="{% url 'timewatchstore:single-product.html' product.pk %}">
+								<img class="img-fluid" src="{{product.image.url}}" alt="{{product.name}}">
+								<div class="product-details">
+									<h6>{{product.name}}</h6>
+									<div class="price">
+										<h6>{% load humanize %}{{product.price|floatformat:0|intcomma}} VNĐ</h6>
+									</div>
+									<form action="{% url 'cart:cart_add' product.id %}" method="POST">
+										{% csrf_token %}
+										<input type="hidden" name="quantity" value="1">
+										<input type="submit" value="Chọn mua" class="primary-btn" style="border:none; border-radius:5px">
+									</form>
+									<!-- <div class="prd-bottom">
+										<a href="" class="social-info">
+											<span class="ti-bag"></span>
+											<p class="hover-text">add to bag</p>
+										</a>
+									</div> -->
+								</div>
+							</a>
+						</div>
+					</div>
+					{% endfor %}
+					{% endif %}
+				</div>
+			</section>
+			<!-- End Best Seller -->
+			<!-- Start Filter Bar -->
+			<div class="filter-bar d-flex flex-wrap align-items-center">
+				<div class="sorting mr-auto">
+					<select>
+						<option value="1">Show 15</option>
+						<option value="1">Show 12</option>
+						<option value="1">Show 9</option>
+					</select>
+				</div>
+				<div class="pagination">
+					{% if products.has_other_pages %}
+					{% if products.has_previous %}
+					<a href="?page={{ products.previous_page_number }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="btn_mange_pagging"><i
+							class="fa fa-long-arrow-left"></i>&nbsp;&nbsp;</a>
+					{% else %}
+					<div class="disabled"><span></span></div>
+					{% endif %}
+					{% for i in products.paginator.page_range %}
+					{% if products.number == i %}
+					<a href="?page={{ i }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="active">{{i}}</a>
+					{% else %}
+					<a href="?page={{ i }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="btn_pagging">{{i}}</a>
+					{% endif %}
+					{% endfor %}
+					{% if products.has_next %}
+					<a href="?page={{ products.next_page_number }}
+						{% if request.GET.subcategory_id %}&subcategory_id={{ request.GET.subcategory_id }}{% endif %}
+						{% if request.GET.name %}&name={{ request.GET.name}}{% endif %}
+						{% if request.GET.subcategory_id_1 %}&subcategory_id_1={{ request.GET.subcategory_id_1 }}{% endif %}
+						{% if request.GET.name_1 %}&name_1={{ request.GET.name_1}}{% endif %}
+						{% if request.GET.price_from %}&price_from={{ request.GET.price_from}}{% endif %}
+						{% if request.GET.price_to %}&price_to={{ request.GET.price_to}}{% endif %}" class="btn_mange_pagging"><i
+							class="fa fa-long-arrow-right"></i>&nbsp;&nbsp; </a>
+					{% else %}
+					<div class="disabled"><span></span></div>
+					{% endif %}
+					{% endif %}
+				</div>
+			</div>
+			<!-- End Filter Bar -->
+		</div>
+	</div>
+</div>
+
+{% endblock %}

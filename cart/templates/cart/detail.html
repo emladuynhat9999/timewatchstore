@@ -1,0 +1,243 @@
+{% extends "timewatchstore/base.html" %}
+{% load static %}
+{% block content %}
+<!-- Start Header Area -->
+<header class="header_area sticky-header">
+    <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light main_box">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <a class="navbar-brand logo_h" href="{% url 'timewatchstore:index.html' %}"><img
+                        src='{% static "timewatchstore/img/logo.png" alt="" %}'></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav menu_nav ml-auto">
+                        <li class="nav-item active"><a class="nav-link"
+                                href="{% url 'timewatchstore:index.html' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link"
+                                href="{% url 'timewatchstore:category.html' 0%}">Shop</a></li>
+                        <!-- <li class="nav-item submenu dropdown">
+                                <a href="{% url 'timewatchstore:category.html' 0%}" class="nav-link dropdown-toggle"
+                                    data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Shop</a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'timewatchstore:category.html' 0%}">Shop Category</a></li>
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'timewatchstore:checkout.html' %}">Product Checkout</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'timewatchstore:cart.html' %}">Shopping Cart</a></li>
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="{% url 'timewatchstore:confirmation.html' %}">Confirmation</a>
+                                    </li>
+                                </ul>
+                            </li> -->
+                        <li class="nav-item submenu dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">Brands</a>
+                            <ul class="dropdown-menu">
+                                {% if subcategories %}
+                                {% for category in subcategories %}
+                                <li class="nav-item"><a class="nav-link"
+                                        href="{% url 'timewatchstore:category.html' category.id%}">{{category.name}}</a>
+                                </li>
+                                {% endfor %}
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link"
+                            href="{% url 'timewatchstore:contact.html' %}">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cart:cart_detail' %}">Cart</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <!-- <li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li> -->
+                        <li class="nav-item">
+                            <button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="search_input" id="search_input_box">
+        <div class="container">
+            <form action="{% url 'timewatchstore:search.html' %}" class="d-flex justify-content-between" method="GET"
+                name="search_form">
+                <select style="width:auto;" name="subcategory_id">
+                    <option selected="selected" value="0">Tất cả</option>
+                    {%if subcategories %}
+                    {% for category in subcategories%}
+                    {% if subcategory == category.id %}
+                    <option value="{{category.id}}" selected="selected">{{category.name}}</option>
+                    {% else %}
+                    <option value="{{category.id}}">{{category.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </select>
+                <input type="search" name="name" class="form-control" placeholder="Search Here ..."
+                    value="{{search_str}}">
+                <button class="btn">button</button>
+                <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+            </form>
+        </div>
+    </div>
+</header>
+<!-- End Header Area -->
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Shopping Cart</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="{% url 'timewatchstore:index.html'%}">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="{% url 'cart:cart_detail'%}">Cart</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Cart Area =================-->
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive" style="overflow-x: inherit;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead style="border-bottom: groove;">
+                                <tr>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col"><i class=""></i></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart %}
+                                {% with product=item.product %}
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="d-flex">
+                                                <a href="{% url 'timewatchstore:single-product.html' product.pk %}"><img src="{{product.image.url}}"
+                                                    alt="{{product.name}}" style="width: 100px; height: 100px;"></a>
+                                            </div>
+                                            <div class="media-body">
+                                                <p><a
+                                                    href="{% url 'timewatchstore:single-product.html' product.pk %}">{{product.name}}</a></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>{% load humanize %}{{product.price|floatformat:0|intcomma}}</h5>
+                                    </td>
+                                    <td>
+                                        <div class="product_count">
+                                            <form action="{% url 'cart:cart_add' product.id %}" method="POST">
+                                                {{item.update_quantity_form.quantity}}
+                                                {{item.update_quantity_form.override}}
+                                                {% csrf_token %}
+                                                <input type="submit" value="&#x21bb;">
+                                            </form>
+                                            <!-- <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
+                                                    class="input-text qty">
+                                                <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                                    class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+                                                <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                                    class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button> -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h5>{% load humanize %}{{item.total_price|floatformat:0|intcomma}}</h5>
+                                    </td>
+                                    <td class="action" data-title="Remove">
+                                        <form action="{% url 'cart:cart_remove' product.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <input type="submit" value="&#9746;">
+                                        </form>
+                                    </td>
+                                </tr>
+                                
+                                {% endwith %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-9">
+
+                    </div>
+                    <div class="col-3">
+                        <ul>
+                            <li>
+                                <h6>Total Prices: {% load humanize %}{{cart.get_total_price|floatformat:0|intcomma}} VNĐ
+                                </h6>
+                            </li>
+                            <li>
+                                <h6>Shipping: Free</h6>
+                            </li>
+                            <li>
+                                <h6>Discount: {% load humanize %}{{timewatchstore.get_discount|floatformat:0|intcomma}}
+                                </h6>
+                            </li>
+                            <li>
+                                <h6>Total Bills: {% load humanize %}{{cart.get_total_price|floatformat:0|intcomma}} VNĐ
+                                </h6>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-6">
+                        <div class="checkout_btn_inner d-flex align-items-center">
+                            {% if cart%}
+                            <a class="primary-btn" style="border-radius: 2px;" href="{% url 'orders:order_create' %}">Proceed to checkout</a>
+                            {% endif %}
+                            
+                            <a class="gray_btn" href="{% url 'timewatchstore:category.html' 0%}">Continue Shopping</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="right">
+                                    <ul>
+                                        <li>Total Prices: {% load humanize %}{{cart.get_total_price|floatformat:0|intcomma}} VNĐ</li>
+                                        <li>Shipping: Free</li>
+                                        <li>Discount: {% load humanize %}{{timewatchstore.get_discount|floatformat:0|intcomma}}</li>
+                                        <li>Total Bills: {% load humanize %}{{cart.get_total_price|floatformat:0|intcomma}} VNĐ</li>
+                                    </ul>
+                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                        {% if cart%}
+                                        <a class="primary-btn" href="#">Proceed to checkout</a>                                        
+                                        {% endif %}
+                                        <a class="gray_btn" href="{% url 'timewatchstore:category.html' 0%}">Continue Shopping</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->
+
+{% endblock %}
