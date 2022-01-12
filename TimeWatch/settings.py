@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-hq57tkb-umt_%u1b89+c(j2__da@^@si#jz4txh#vo4#y$!-c4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['timewatchstore.herokuapp.com/',]
+ALLOWED_HOSTS = ['timewatchstore.herokuapp.com','127.0.0.1']
 
 
 # Application definition
